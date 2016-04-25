@@ -1,0 +1,25 @@
+
+language: go
+
+go:
+  - 1.5
+  - 1.6
+
+services:
+  - mongodb
+
+install:
+  - go get -t -d -v ./...
+  - go get github.com/onsi/ginkgo/ginkgo
+  - go get -u github.com/golang/lint/golint
+  - go get -u github.com/modocache/gover
+  - go get -u github.com/mattn/goveralls
+
+script:
+  - ginkgo -r -cover --randomizeSuites --failOnPending --trace --race --progress
+  - find ./src -type f -name "*.coverprofile" -exec mv {} ./ \;
+  - gover
+  - goveralls -coverprofile=gover.coverprofile -repotoken OTvnr6WMpxxcBKBPjmGm4iIv6Oo1fkWJw
+
+notifications:
+  email: false

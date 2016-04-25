@@ -1,0 +1,136 @@
+@mixin aspect-ratio($width, $height) {
+	position: relative;
+
+	&:before {
+		display: block;
+		content: "";
+		width: 100%;
+		padding-top: percentage($height/$width);
+	}
+}
+
+.game {
+	width: 100%;
+
+	@include media-breakpoint-up(sm) {
+		width: 80%;
+
+		.game-field {
+			padding: 10px;
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		width: 50%;
+	}
+
+	@include clearfix();
+
+	.game-field {
+		float: left;
+		position: relative;
+		width: percentage(1/3);
+
+		padding: 5px;
+
+		&.game-field-next {
+			background-color: red;
+		}
+
+		&.game-field-won {
+			@include fa-icon();
+			display: block;
+
+			&:before {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				font-size: 6em;
+				z-index: 2;
+				opacity: 0.8;
+				pointer-events: none;
+			}
+
+			&.game-field-won-player-one:before {
+				position: absolute;
+				color: $player-one-color;
+				content: $player-one-icon;
+			}
+
+
+			&.game-field-won-player-two:before {
+				position: absolute;
+				color: $player-two-color;
+				content: $player-two-icon;
+			}
+		}
+	}
+
+	.game-cell {
+		float: left;
+		width: percentage(1/3);
+
+		.content {
+			background-color: $empty-field-bg;
+
+			position: absolute;
+			top: 1px;
+			right: 1px;
+			left: 1px;
+			bottom: 1px;
+			border-radius: $border-radius-sm;
+
+			overflow: hidden;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		@include aspect-ratio(1, 1);
+
+		&.game-cell-marked {
+			.content {
+				@include fa-icon();
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				font-size: 2em;
+
+				&:before {
+					text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+				}
+			}
+
+			cursor: not-allowed;
+		}
+
+		&.game-cell-marked-pone {
+			.content {
+				color: $player-one-color;
+				background-color: $player-one-bg;
+
+				&:before {
+					content: $player-one-icon;
+				}
+			}
+		}
+
+		&.game-cell-marked-ptwo {
+			.content {
+				color: $player-two-color;
+				background-color: $player-two-bg;
+
+				&:before {
+					content: $player-two-icon;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,23 @@
+.hidden {
+	display: none;
+}
+
+body {
+	min-height: 100vh;
+}
+
+#landingpage {
+	min-height: 100vh;
+}
+
+#game {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+}
+
+.navbar-brand-center {
+	width: 100%;
+	text-align: center;
+}
