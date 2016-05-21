@@ -13,15 +13,9 @@
 	width: 100%;
 
 	@include media-breakpoint-up(sm) {
-		width: 80%;
-
 		.game-field {
 			padding: 10px;
 		}
-	}
-
-	@include media-breakpoint-up(md) {
-		width: 50%;
 	}
 
 	@include clearfix();
