@@ -1,0 +1,53 @@
+.player-info-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+
+  .username {
+    margin: 0 1em;
+  }
+
+  .icon {
+    padding: 0.5em;
+
+    @include fa-icon();
+
+    &.icon-player-one {
+      background-color: $player-one-bg;
+
+      &:before {
+        color: $player-one-color;
+        content: $player-one-icon;
+      }
+    }
+
+    &.icon-player-two {
+      background-color: $player-two-bg;
+
+      &:before {
+        color: $player-two-color;
+        content: $player-two-icon;
+      }
+    }
+
+    &.icon-player-two:before {
+      color: $player-two-color;
+      content: $player-two-icon;
+    }
+  }
+
+  &.player-info-active {
+      .username {
+        font-weight: bold;
+      }
+  }
+
+  &.player-info-opponent {
+    flex-direction: row-reverse;
+  }
+}

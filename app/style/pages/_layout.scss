@@ -4,17 +4,19 @@
 
 body {
 	min-height: 100vh;
+	padding-top: $body-padding;
 }
 
 #landingpage {
 	min-height: 100vh;
 }
 
-#game {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+#game-container {
 	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-top: -($body-padding);
 }
 
 .navbar-brand-center {

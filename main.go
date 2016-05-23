@@ -34,6 +34,10 @@ func main() {
 		os.Setenv("DB_HOST", "localhost:27017")
 	}
 
+	if "" == os.Getenv("PUBLIC_DIR") {
+		os.Setenv("PUBLIC_DIR", "public")
+	}
+
 	connectionString := "localhost:27017"
 
 	if os.Getenv("MONGO_PORT_27017_TCP_ADDR") != "" && os.Getenv("MONGO_PORT_27017_TCP_PORT") != "" {
@@ -191,7 +195,7 @@ func main() {
 
 	http.Handle("/socket.io/", server)
 
-	http.Handle("/", http.FileServer(http.Dir("public")))
+	http.Handle("/", http.FileServer(http.Dir(os.Getenv("PUBLIC_DIR"))))
 
 	log.Printf("Serving at localhost:%s...", os.Getenv("PORT"))
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), nil))

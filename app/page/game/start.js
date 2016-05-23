@@ -25,11 +25,13 @@ class GameStartPage extends React.Component {
 		}
 
 		return(
-			<GameForm handleSubmit={this._handleSubmit.bind(this)} submitTrans="Start game" isSubmitable={this.state.isFormSubmitable}>
-				<fieldset className="form-group">
-    			<input type="text" className="form-control" id="username" placeholder="Enter Username" ref={c => this._username = c} onChange={this._handleFormChange.bind(this)} />
-  			</fieldset>
-			</GameForm>
+			<div className="container">
+				<GameForm handleSubmit={this._handleSubmit.bind(this)} submitTrans="Start game" isSubmitable={this.state.isFormSubmitable}>
+					<fieldset className="form-group">
+						<input type="text" className="form-control" id="username" placeholder="Enter Username" ref={c => this._username = c} onChange={this._handleFormChange.bind(this)} />
+					</fieldset>
+				</GameForm>
+			</div>
 		);
 	}
 
