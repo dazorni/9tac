@@ -287,5 +287,27 @@ var _ = Describe("User", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("Field is already played"))
 		})
+
+		It("Winner should not change", func() {
+			playerOne := InsertUser("playerOne")
+			playerTwo := InsertUser("playerTwo")
+			game := InsertFullGame(playerOne, playerTwo)
+
+			gameStorage.Turn(&game, playerOne, 24)
+			gameStorage.Turn(&game, playerTwo, 56)
+			gameStorage.Turn(&game, playerOne, 25)
+			gameStorage.Turn(&game, playerTwo, 59)
+			gameStorage.Turn(&game, playerOne, 26)
+			gameStorage.Turn(&game, playerTwo, 80)
+			gameStorage.Turn(&game, playerOne, 62)
+			gameStorage.Turn(&game, playerTwo, 17)
+			gameStorage.Turn(&game, playerOne, 35)
+			gameStorage.Turn(&game, playerTwo, 16)
+			gameStorage.Turn(&game, playerOne, 32)
+			turn, err := gameStorage.Turn(&game, playerTwo, 15)
+
+			Expect(err).ToNot(HaveOccurred())
+			Expect(turn.WonField).To(BeFalse())
+		})
 	})
 })

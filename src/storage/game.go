@@ -165,7 +165,7 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 			return turn, errors.New(sameFieldErr)
 		}
 
-		if previousTurn.WonField == true && previousTurn.Field == turn.Field && previousTurn.Player.Id == turn.Player.Id {
+		if previousTurn.WonField == true && previousTurn.Field == turn.Field {
 			alreadyWonField = true
 		}
 	}
