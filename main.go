@@ -60,7 +60,7 @@ func main() {
 			user.Username = username
 
 			if err := userStorage.Insert(&user); err != nil {
-				log.Fatal(err)
+				log.Print(err)
 
 				return
 			}
@@ -93,7 +93,7 @@ func main() {
 			game.FirstPlayer = user.DBRef()
 
 			if err := gameStorage.Insert(&game); err != nil {
-				log.Fatal(err)
+				log.Print(err)
 
 				return
 			}
@@ -117,7 +117,7 @@ func main() {
 				user.Username = username
 
 				if err := userStorage.Insert(&user); err != nil {
-					log.Fatal(err)
+					log.Print(err)
 
 					return
 				}
@@ -128,7 +128,7 @@ func main() {
 
 			if err := gameStorage.JoinGame(&game, user); err != nil {
 				// emit error to the user
-				log.Fatal(err)
+				log.Print(err)
 
 				return
 			}
