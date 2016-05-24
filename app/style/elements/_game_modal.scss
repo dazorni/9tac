@@ -1,0 +1,44 @@
+.game-modal-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .game-modal {
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+    background-color: $body-bg;
+    border-radius: $border-radius;
+    text-align: center;
+    padding: 2em;
+
+    .close {
+      position: absolute;
+      top: 0;
+      right: 7px;
+    }
+
+    .game-modal-icon {
+      @include fa-icon();
+      font-size: 100px;
+      padding-bottom: 1rem;
+
+      &.game-modal-icon-won:before {
+        color: $game-modal-won-color;
+        content: $game-modal-won-icon;
+      }
+
+      &.game-modal-icon-lost:before {
+        color: $game-modal-lost-color;
+        content: $game-modal-lost-icon;
+      }
+    }
+  }
+}

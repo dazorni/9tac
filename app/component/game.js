@@ -2,6 +2,7 @@ import React from 'react';
 import GameField from './game-field';
 import IO from 'socket.io-client';
 import GamePlayerInfoBox from './game-player-info-box';
+import GameModal from './game-modal';
 
 class Game extends React.Component {
 	constructor() {
@@ -60,9 +61,9 @@ class Game extends React.Component {
 				<div id="game-container">
 					<div className="game">
 						{this._getFields()}
-
-						{this._winningCheck()}
 					</div>
+
+					{this._winningModal()}
 
 					<nav className="navbar navbar-fixed-bottom navbar-light bg-faded">
 						{this._getPlayerInfo()}
@@ -88,13 +89,17 @@ class Game extends React.Component {
 		})
 	}
 
-	_winningCheck() {
+	_winningModal() {
 		if (this.state.gameEnded) {
+			let won = false;
+
 			if (this.state.winner == this.props.username) {
-				return ('You won');
+				won = true;
 			}
 
-			return ('You lost the game');
+			return (
+				<GameModal won={won} />
+			)
 		}
 
 		return ('');
