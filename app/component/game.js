@@ -61,7 +61,6 @@ class Game extends React.Component {
 					<div className="game">
 						{this._getFields()}
 
-						{this._whichTurn()}
 						{this._winningCheck()}
 					</div>
 
@@ -136,14 +135,6 @@ class Game extends React.Component {
 
 		return false;
 	};
-
-	_whichTurn() {
-		if (this._isCurrentPlayer(this.props.username)) {
-				return "Your turn";
-		}
-
-		return `${this.state.opponent} is next`;
-	}
 
 	componentWillMount() {
 		this._buildGame();
