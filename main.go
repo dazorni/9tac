@@ -23,7 +23,7 @@ func main() {
 	}
 
 	if "" == os.Getenv("PORT") {
-		os.Setenv("PORT", "9000")
+		os.Setenv("PORT", "5000")
 	}
 
 	if "" == os.Getenv("DB_NAME") {
