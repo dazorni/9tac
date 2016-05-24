@@ -35,6 +35,7 @@
 
 		&.game-field-next {
 			opacity: 1;
+			transform: scale(1.05, 1.05);
 		}
 
 		&.game-field-won {
