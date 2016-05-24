@@ -13,14 +13,15 @@
   },
   "scripts": {
     "build:css": "./node_modules/.bin/node-sass app/style/bootstrap.scss build/public/css/game.css",
-    "build:css:watch": "./node_modules/.bin/onchange app/style/**/* -- npm run build-css",
+    "build:css:watch": "./node_modules/.bin/onchange app/style/**/* -- npm run build:css",
     "build:js": "./node_modules/.bin/webpack -d",
+    "build:js:watch": "./node_modules/.bin/webpack -d --watch",
     "build:js:prod": "./node_modules/.bin/webpack -p",
-    "build:webpack:watch": "./node_modules/.bin/webpack -d --watch",
-    "build:watch": "npm run build-css:watch && npm run build-webpack-watch",
-    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:dev": "webpack-dev-server --inline --content-base public/ --history-api-fallback",
-    "start:prod": "webpack"
+    "build:fonts": "mkdir build/public/fonts && cp -R node_modules/font-awesome/fonts/* build/public/fonts",
+    "build:views": "cp app/views/* build/public",
+    "build:views:watch": "./node_modules/.bin/onchange app/views/**/* -- npm run build:views",
+	"build": "rm -rf build/ && npm run build:js:prod && npm run build:css && npm run build:fonts && npm run build:views",
+    "build:watch": "npm run build:css:watch && npm run build:js:watch && npm run build:views:watch"
   },
   "devDependencies": {
     "babel-core": "^6.8.0",

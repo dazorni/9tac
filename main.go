@@ -23,7 +23,7 @@ func main() {
 	}
 
 	if "" == os.Getenv("PORT") {
-		os.Setenv("PORT", "9000")
+		os.Setenv("PORT", "5000")
 	}
 
 	if "" == os.Getenv("DB_NAME") {
@@ -32,6 +32,10 @@ func main() {
 
 	if "" == os.Getenv("DB_HOST") {
 		os.Setenv("DB_HOST", "localhost:27017")
+	}
+
+	if "" == os.Getenv("PUBLIC_DIR") {
+		os.Setenv("PUBLIC_DIR", "public")
 	}
 
 	connectionString := "localhost:27017"
@@ -191,7 +195,7 @@ func main() {
 
 	http.Handle("/socket.io/", server)
 
-	http.Handle("/", http.FileServer(http.Dir("public")))
+	http.Handle("/", http.FileServer(http.Dir(os.Getenv("PUBLIC_DIR"))))
 
 	log.Printf("Serving at localhost:%s...", os.Getenv("PORT"))
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), nil))

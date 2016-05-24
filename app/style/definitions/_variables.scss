@@ -1,4 +1,5 @@
-$empty-field-bg: #78bec5;
+$field-empty-bg: #78BEC5;
+$field-next-bg: red;
 
 $player-one-bg: #dc685a;
 $player-one-color: #ffffff;
@@ -6,3 +7,10 @@ $player-one-icon: $fa-var-times;
 $player-two-bg: #ecaf4f;
 $player-two-color: #ffffff;
 $player-two-icon: $fa-var-circle-o;
+
+$body-padding: (5*$font-size-base);
+
+$game-modal-won-icon: $fa-var-trophy;
+$game-modal-won-color: #ecaf4f;
+$game-modal-lost-icon: $fa-var-frown-o;
+$game-modal-lost-color: #dc685a;

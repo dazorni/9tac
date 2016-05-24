@@ -1,6 +1,8 @@
 import React from 'react';
 import GameField from './game-field';
 import IO from 'socket.io-client';
+import GamePlayerInfoBox from './game-player-info-box';
+import GameModal from './game-modal';
 
 class Game extends React.Component {
 	constructor() {
@@ -10,7 +12,7 @@ class Game extends React.Component {
 			socket: IO.connect(),
 			playedCells: [],
 			gameStarted: false,
-			opponnent: null,
+			opponent: null,
 			gameCode: null,
 			startingPlayer: null,
 			previousPlayer: null,
@@ -56,14 +58,16 @@ class Game extends React.Component {
 	_play() {
 		if (this.state.gameStarted) {
 			return (
-				<div className="game">
-					<div>GameCode: {this.state.gameCode}</div>
-					<div>{this.props.username} vs. {this.state.opponnent}</div>
+				<div id="game-container">
+					<div className="game">
+						{this._getFields()}
+					</div>
 
-					{this._getFields()}
+					{this._winningModal()}
 
-					{this._whichTurn()}
-					{this._winningCheck()}
+					<nav className="navbar navbar-fixed-bottom navbar-light bg-faded">
+						{this._getPlayerInfo()}
+					</nav>
 				</div>
 			)
 		}
@@ -85,31 +89,57 @@ class Game extends React.Component {
 		})
 	}
 
-	_winningCheck() {
-		console.log(this.state.gameEnded);
-
+	_winningModal() {
 		if (this.state.gameEnded) {
+			let won = false;
+
 			if (this.state.winner == this.props.username) {
-				return ('You won');
+				won = true;
 			}
 
-			return ('You lost the game');
+			return (
+				<GameModal won={won} />
+			)
 		}
 
 		return ('');
 	}
 
-	_whichTurn() {
-		if (this.state.previousPlayer && this.state.previousPlayer != this.props.username) {
-				return "Your turn";
+	_getPlayerInfo() {
+		if (! this.state.gameStarted) {
+			return;
 		}
 
-		if (! this.state.previousPlayer && this.state.startingPlayer == this.props.username) {
-			return "Your turn";
+		const playerOne = {
+			username: this.props.username,
+			isCurrentPlayer: this._isCurrentPlayer(this.props.username),
+			isStartingPlayer: this.state.startingPlayer == this.props.username,
+			isOpponent: false
+		};
+
+		const playerTwo = {
+			username: this.state.opponent,
+			isCurrentPlayer: this._isCurrentPlayer(this.state.opponent),
+			isStartingPlayer: this.state.startingPlayer == this.state.opponent,
+			isOpponent: true
 		}
 
-		return `${this.state.opponnent} is next`;
-	}
+		const player = [playerOne, playerTwo];
+
+		return (<GamePlayerInfoBox player={player} />);
+	};
+
+	_isCurrentPlayer(username) {
+		if (this.state.previousPlayer && this.state.previousPlayer != username) {
+				return true;
+		}
+
+		if (! this.state.previousPlayer && this.state.startingPlayer == username) {
+			return true;
+		}
+
+		return false;
+	};
 
 	componentWillMount() {
 		this._buildGame();
@@ -120,14 +150,14 @@ class Game extends React.Component {
 	}
 
 	_joinGame(firstPlayer, secondPlayer, gameCode, startingField) {
-		let opponnent = firstPlayer;
+		let opponent = firstPlayer;
 
 		if (this.props.username != secondPlayer) {
-			opponnent = secondPlayer;
+			opponent = secondPlayer;
 		}
 
 		this.setState({
-			opponnent: opponnent,
+			opponent: opponent,
 			gameCode: gameCode,
 			gameStarted: true,
 			startingPlayer: firstPlayer,
@@ -148,7 +178,7 @@ class Game extends React.Component {
 			return;
 		}
 
-		if (! this.state.	previousPlayer && this.state.startingPlayer != this.props.username) {
+		if (! this.state.previousPlayer && this.state.startingPlayer != this.props.username) {
 			return;
 		}
 
