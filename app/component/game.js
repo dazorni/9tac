@@ -35,7 +35,7 @@ class Game extends React.Component {
 			const cells = [];
 
 	    for (let inc = 0; inc <= 8; inc++) {
-	        cells.push({position: this._getPosition(field, inc), marked: false, isStartingPlayer: false});
+	        cells.push({position: this._getPosition(field, inc), marked: false, isStartingPlayer: false, isLastTurn: false});
 	    }
 
 			fields.push({ position: field, won: false, player: null, cells: cells, next: false})
@@ -200,11 +200,20 @@ class Game extends React.Component {
 		const fields = this.state.fields;
 
 		fields.map(field => {
+			field.cells.map(cell => {
+				cell.isLastTurn = false;
+
+				return cell;
+			});
+
 			if (field.position == turn.Field) {
 				field.cells.map(cell => {
+					cell.isLastTurn = false;
+
 					if (cell.position == turn.Position) {
-						cell.marked = true
-						cell.isStartingPlayer = this.state.startingPlayer == username
+						cell.marked = true;
+						cell.isStartingPlayer = this.state.startingPlayer == username;
+						cell.isLastTurn = true;
 					}
 
 					return cell

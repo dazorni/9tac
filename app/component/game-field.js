@@ -50,6 +50,7 @@ class GameField extends React.Component {
         field={this.props.field}
         onTurn={this.props.onTurn}
         marked={cell.marked}
+        isLastTurn={cell.isLastTurn}
         isStartingPlayer={cell.isStartingPlayer} />
     });
   }
