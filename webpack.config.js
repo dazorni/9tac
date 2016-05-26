@@ -15,7 +15,7 @@ var config = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-	new webpack.EnvironmentPlugin(["NODE_ENV"]),
+	  new webpack.EnvironmentPlugin(["NODE_ENV"]),
   ],
   module : {
     loaders : [
@@ -23,13 +23,8 @@ var config = {
         test : /.+.js$/,
         include : APP_DIR,
         loader : 'babel'
-      },
-      {
-        test: /bootstrap\/js\//,
-        loader: 'imports?jQuery=jquery'
-	  }
-	],
-
+      }
+	  ],
     preLoaders: [
       {
         test: /\.js?$/,

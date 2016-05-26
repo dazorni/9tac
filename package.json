@@ -16,7 +16,7 @@
     "build:css:watch": "./node_modules/.bin/onchange app/style/**/* -- npm run build:css",
     "build:js": "./node_modules/.bin/webpack -d",
     "build:js:watch": "./node_modules/.bin/webpack -d --watch",
-    "build:js:prod": "./node_modules/.bin/webpack -p",
+    "build:js:prod": "./node_modules/.bin/webpack --progress -p",
     "build:fonts": "mkdir build/public/fonts && cp -R node_modules/font-awesome/fonts/* build/public/fonts",
     "build:views": "cp app/views/* build/public",
     "build:views:watch": "./node_modules/.bin/onchange app/views/**/* -- npm run build:views",
