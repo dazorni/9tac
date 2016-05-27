@@ -205,6 +205,24 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 		turn.WonGame = checkForWin(previousWonFields, turn.Field)
 	}
 
+	previousTurnsInNextField := 0
+
+	for _, previousTurn := range previousTurns {
+		if turn.NextField != previousTurn.Field {
+			continue
+		}
+
+		previousTurnsInNextField++
+	}
+
+	if turn.Field == turn.NextField {
+		previousTurnsInNextField++
+	}
+
+	if previousTurnsInNextField == 9 {
+		turn.RandomField = true
+	}
+
 	turn.TurnCount = previousTurn.TurnCount + 1
 	err := collection.Insert(&turn)
 
