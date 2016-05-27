@@ -1,10 +1,11 @@
 package storage_test
 
 import (
+	"time"
+
 	"github.com/dazorni/9tac/src/model"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
-	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -143,6 +144,21 @@ var _ = Describe("User", func() {
 			Expect(game.StartDate).To(BeTemporally(">", startDate))
 			Expect(game.StartingPlayer.Id).To(Equal(playerOne.DBRef().Id))
 			Expect(turn.NextField).To(Equal(0))
+		})
+
+		It("Check turn count", func() {
+			playerOne := InsertUser("playerOne")
+			playerTwo := InsertUser("playerTwo")
+			game := InsertFullGame(playerOne, playerTwo)
+
+			turn, err := gameStorage.Turn(&game, playerOne, 27)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(turn.TurnCount).To(Equal(1))
+			Expect(game.TurnCount).To(Equal(1))
+
+			databaseGame, err := gameStorage.FindOne(game.ID.Hex())
+			Expect(err).ToNot(HaveOccurred())
+			Expect(databaseGame.TurnCount).To(Equal(1))
 		})
 
 		It("Insert one complete game", func() {

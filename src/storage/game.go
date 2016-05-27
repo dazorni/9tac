@@ -105,6 +105,7 @@ func (storage GameStorage) FindOne(gameId string) (model.Game, error) {
 func (storage GameStorage) Turn(game *model.Game, player model.User, position int) (model.Turn, error) {
 	session := storage.session.Copy()
 	defer session.Close()
+	defer storage.updateTurnCount(game)
 
 	turn := model.Turn{}
 	turn.ID = bson.NewObjectId()
@@ -124,7 +125,7 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 		if err == mgo.ErrNotFound {
 			game.StartingPlayer = player.DBRef()
 			game.StartDate = time.Now()
-			game.TurnCount = 0
+			turn.TurnCount = 1
 			collection.UpdateId(game.ID, game)
 
 			if err := collection.Insert(turn); err != nil {
@@ -208,6 +209,23 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 	err := collection.Insert(&turn)
 
 	return turn, err
+}
+
+func (storage GameStorage) updateTurnCount(game *model.Game) error {
+	session := storage.session.Copy()
+	defer session.Close()
+
+	lastTurnQuery := bson.M{"game.$id": game.ID}
+	collection := session.DB(storage.databaseName).C("turn")
+	lastTurn := model.Turn{}
+
+	if err := collection.Find(lastTurnQuery).Sort("-turnCount").One(&lastTurn); err != nil {
+		return err
+	}
+
+	game.TurnCount = lastTurn.TurnCount
+
+	return session.DB(storage.databaseName).C("game").UpdateId(game.ID, &game)
 }
 
 func checkForWin(previousTurns [9]bool, turnField int) bool {
