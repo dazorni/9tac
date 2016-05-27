@@ -33,6 +33,11 @@
 
 		padding: 5px;
 
+		&.game-field-next:nth-last-child(9),
+		&.game-field-next:nth-last-child(9) ~ .game-field-next {
+			transform: scale(1, 1);
+		}
+
 		&.game-field-next {
 			opacity: 1;
 			transform: scale(1.05, 1.05);
