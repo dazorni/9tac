@@ -24,7 +24,9 @@ func (storage UserStorage) Insert(user *model.User) error {
 
 	user.ID = bson.NewObjectId()
 
-	// TODO: Do validation
+	if err := user.Valid(); err != nil {
+		return err
+	}
 
 	return session.DB(storage.databaseName).C("user").Insert(&user)
 }
