@@ -19,6 +19,10 @@ class GameCell extends React.Component {
         playerClass = '-ptwo';
       }
 
+      if (this.props.isLastTurn) {
+        playerClass = playerClass + ' game-cell-last-turn';
+      }
+
       className = className + ' game-cell-marked game-cell-marked' + playerClass;
     }
 
@@ -31,6 +35,7 @@ class GameCell extends React.Component {
 }
 
 GameCell.propTypes = {
+  isLastTurn: React.PropTypes.bool.isRequired,
   position: React.PropTypes.any.isRequired,
   onTurn: React.PropTypes.func.isRequired
 }
