@@ -14,6 +14,7 @@ const app = (
 			<Route path="game" component={GameStartPage} />
       <Route path="game-join" component={GameJoinPage} />
       <Route path="game/:gameCode" component={GamePlayPage} />
+      <Route path="game-join/:gameCode" component={GameJoinPage} />
     </Route>
   </Router>
 )
