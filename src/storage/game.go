@@ -143,7 +143,7 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 		return turn, errors.New(wrongPlayErr)
 	}
 
-	if previousTurn.NextField != turn.Field {
+	if previousTurn.RandomField != true && previousTurn.NextField != turn.Field {
 		wrongFieldErr := fmt.Sprintf("Wrong field. Previous: %d now: %d, position: %d", previousTurn.NextField, turn.Field, turn.Position)
 		return turn, errors.New(wrongFieldErr)
 	}
