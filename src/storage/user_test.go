@@ -28,6 +28,14 @@ var _ = Describe("User", func() {
 			Expect(err).ToNot(HaveOccurred())
 			Expect(user.ID.Valid()).To(BeTrue())
 		})
+
+		It("Too long username", func() {
+			user := model.User{}
+			user.Username = "morethantwentycharacterslongusername"
+
+			err := userStorage.Insert(&user)
+			Expect(err).To(HaveOccurred())
+		})
 	})
 
 	Context("Find by username", func() {
