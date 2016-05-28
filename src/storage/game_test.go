@@ -366,6 +366,56 @@ var _ = Describe("User", func() {
 			}
 		})
 
+		It("Insert game with random field at the end and random field turn", func() {
+			playerOne := InsertUser("playerOne")
+			playerTwo := InsertUser("playerTwo")
+			game := InsertFullGame(playerOne, playerTwo)
+
+			var testTurns = []struct {
+				Player      model.User
+				Position    int
+				Field       int
+				NextField   int
+				WonField    bool
+				WonGame     bool
+				RandomField bool
+			}{
+				{playerTwo, 75, 7, 6, false, false, false},
+				{playerOne, 73, 6, 7, false, false, false},
+				{playerTwo, 76, 7, 7, false, false, false},
+				{playerOne, 77, 7, 8, false, false, false},
+				{playerTwo, 79, 8, 7, false, false, false},
+				{playerOne, 68, 7, 5, false, false, false},
+				{playerTwo, 52, 5, 7, false, false, false},
+				{playerOne, 59, 7, 2, true, false, false},
+				{playerTwo, 25, 2, 7, false, false, false},
+				{playerOne, 67, 7, 4, false, false, false},
+				{playerTwo, 49, 4, 7, false, false, false},
+				{playerOne, 58, 7, 1, false, false, false},
+				{playerTwo, 22, 1, 7, false, false, false},
+				{playerOne, 66, 7, 3, false, false, false},
+				{playerTwo, 46, 3, 7, false, false, false},
+				{playerOne, 57, 7, 0, false, false, false},
+				{playerTwo, 19, 0, 7, false, false, true},
+				{playerOne, 20, 0, 8, false, false, false},
+			}
+
+			for _, turn := range testTurns {
+				resultTurn, err := gameStorage.Turn(&game, turn.Player, turn.Position)
+
+				Expect(err).ToNot(HaveOccurred())
+				Expect(resultTurn.Field).To(Equal(turn.Field))
+				Expect(resultTurn.WonField).To(Equal(turn.WonField))
+				Expect(resultTurn.WonGame).To(Equal(turn.WonGame))
+				Expect(resultTurn.Position).To(Equal(turn.Position))
+				Expect(resultTurn.NextField).To(Equal(turn.NextField))
+
+				if turn.RandomField == true {
+					Expect(resultTurn.RandomField).To(BeTrue())
+				}
+			}
+		})
+
 		It("Insert invalid turn", func() {
 			playerOne := InsertUser("playerOne")
 			playerTwo := InsertUser("playerTwo")
