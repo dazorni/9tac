@@ -17,6 +17,7 @@ class Game extends React.Component {
 			startingPlayer: null,
 			previousPlayer: null,
 			nextField: 0,
+			isNextFieldRandom: false,
 			gameEnded: false,
 			winner: null,
 			fields: this._createFields()
@@ -78,6 +79,12 @@ class Game extends React.Component {
 	}
 
 	_getFields() {return this.state.fields.map(field => {
+			let isNextField = false;
+
+			if (this.state.isNextFieldRandom || this.state.nextField == field.position) {
+				isNextField = true
+			}
+
 			return(<GameField
 				onTurn={this._onTurn.bind(this)}
 				field={field.position}
@@ -85,7 +92,7 @@ class Game extends React.Component {
 				won={field.won}
 				isStartingPlayer={ field.winningPlayer == this.state.startingPlayer }
 				key={field.position}
-				next={this.state.nextField == field.position} />)
+				next={isNextField} />)
 		})
 	}
 
@@ -170,7 +177,7 @@ class Game extends React.Component {
 			return;
 		}
 
-		if (this.state.nextField != field) {
+		if (this.state.isNextFieldRandom == false && this.state.nextField != field) {
 			return;
 		}
 
@@ -219,11 +226,18 @@ class Game extends React.Component {
 			this.setState({wonGame: true, winner: username, gameEnded: true});
 		}
 
+		let isNextFieldRandom = false;
+
+		if (turn.RandomField) {
+			isNextFieldRandom = true;
+		}
+
 		this.setState({
 			previousPlayer: username,
 			nextField: turn.NextField,
 			fields: fields,
-			playedCells: playedCells
+			playedCells: playedCells,
+			isNextFieldRandom: isNextFieldRandom
 		});
 	};
 
