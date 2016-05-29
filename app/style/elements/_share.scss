@@ -1,0 +1,28 @@
+.sharing-screen {
+  @extend .column-center;
+
+  .loading-text {
+    @extend .text-muted;
+    margin-top: 1em;
+    margin-bottom: 1rem;
+  }
+
+  .sharing-screen-link {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .sharing-screen-info {
+    @extend .text-muted;
+  }
+
+  .btn-share {
+    @extend .btn;
+    @extend .btn-sm;
+    @extend .btn-primary-outline;
+
+    &.btn-share-active {
+      @extend .btn-primary;
+    }
+  }
+}

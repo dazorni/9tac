@@ -3,6 +3,7 @@ import GameField from './game-field';
 import IO from 'socket.io-client';
 import GamePlayerInfoBox from './game-player-info-box';
 import GameModal from './game-modal';
+import SharingScreen from './game/sharing-screen';
 
 class Game extends React.Component {
 	constructor() {
@@ -73,9 +74,15 @@ class Game extends React.Component {
 			)
 		}
 
-		return (
-			<div>GameCode: {this.state.gameCode}</div>
-		)
+    if (this.state.gameCode) {
+      return (
+        <SharingScreen gameCode={this.state.gameCode} />
+  		)
+    }
+
+    return (
+      <div>Create game...</div>
+    )
 	}
 
 	_getFields() {return this.state.fields.map(field => {
