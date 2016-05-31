@@ -167,104 +167,123 @@ var _ = Describe("User", func() {
 			game := InsertFullGame(playerOne, playerTwo)
 
 			var testTurns = []struct {
-				Player    model.User
-				X         int
-				Y         int
-				Field     int
-				NextField int
-				WonField  bool
-				WonGame   bool
-				lastTurn  bool
+				Player            model.User
+				Position          int
+				Field             int
+				NextField         int
+				WonField          bool
+				WonGame           bool
+				IsNextFieldRandom bool
+				lastTurn          bool
 			}{
-				{playerTwo, 6, 2, 2, 6, false, false, false},
-				{playerOne, 2, 7, 6, 5, false, false, false},
-				{playerTwo, 6, 3, 5, 0, false, false, false},
-				{playerOne, 2, 2, 0, 8, false, false, false},
-				{playerTwo, 6, 6, 8, 0, false, false, false},
-				{playerOne, 1, 2, 0, 7, false, false, false},
-				{playerTwo, 5, 8, 7, 8, false, false, false},
-				{playerOne, 6, 7, 8, 3, false, false, false},
-				{playerTwo, 1, 5, 3, 7, false, false, false},
-				{playerOne, 4, 6, 7, 1, false, false, false},
-				{playerTwo, 5, 0, 1, 2, false, false, false},
-				{playerOne, 8, 0, 2, 2, false, false, false},
-				{playerTwo, 7, 0, 2, 1, false, false, false},
-				{playerOne, 4, 0, 1, 1, false, false, false},
-				{playerTwo, 3, 1, 1, 3, false, false, false},
-				{playerOne, 0, 5, 3, 6, false, false, false},
-				{playerTwo, 0, 8, 6, 6, false, false, false},
-				{playerOne, 2, 8, 6, 8, false, false, false},
-				{playerTwo, 8, 8, 8, 8, false, false, false},
-				{playerOne, 6, 8, 8, 6, false, false, false},
-				{playerTwo, 1, 6, 6, 1, false, false, false},
-				{playerOne, 4, 2, 1, 7, false, false, false},
-				{playerTwo, 4, 8, 7, 7, false, false, false},
-				{playerOne, 3, 8, 7, 6, false, false, false},
-				{playerTwo, 0, 6, 6, 0, false, false, false},
-				{playerOne, 2, 1, 0, 5, false, false, false},
-				{playerTwo, 8, 5, 5, 8, false, false, false},
-				{playerOne, 7, 7, 8, 4, false, false, false},
-				{playerTwo, 4, 4, 4, 4, false, false, false},
-				{playerOne, 3, 4, 4, 3, false, false, false},
-				{playerTwo, 1, 4, 3, 4, false, false, false},
-				{playerOne, 3, 3, 4, 0, false, false, false},
-				{playerTwo, 0, 1, 0, 3, false, false, false},
-				{playerOne, 0, 3, 3, 0, false, false, false},
-				{playerTwo, 0, 0, 0, 0, false, false, false},
-				{playerOne, 2, 0, 0, 2, true, false, false},
-				{playerTwo, 8, 1, 2, 5, false, false, false},
-				{playerOne, 7, 5, 5, 7, false, false, false},
-				{playerTwo, 3, 6, 7, 0, false, false, false},
-				{playerOne, 0, 2, 0, 6, false, false, false},
-				{playerTwo, 2, 6, 6, 2, true, false, false},
-				{playerOne, 6, 0, 2, 0, false, false, false},
-				{playerTwo, 1, 1, 0, 4, false, false, false},
-				{playerOne, 3, 5, 4, 6, true, false, false},
-				{playerTwo, 1, 7, 6, 4, false, false, false},
-				{playerOne, 4, 3, 4, 1, false, false, false},
-				{playerTwo, 3, 0, 1, 0, false, false, false},
-				{playerOne, 1, 0, 0, 1, false, false, false},
-				{playerTwo, 4, 1, 1, 4, false, false, false},
-				{playerOne, 5, 5, 4, 8, false, false, false},
-				{playerTwo, 7, 6, 8, 1, false, false, false},
-				{playerOne, 5, 2, 1, 8, false, false, false},
-				{playerTwo, 8, 6, 8, 2, true, false, false},
-				{playerOne, 8, 2, 2, 8, false, false, false},
-				{playerTwo, 8, 7, 8, 5, false, false, false},
-				{playerOne, 7, 4, 5, 4, false, false, false},
-				{playerTwo, 5, 4, 4, 5, false, false, false},
-				{playerOne, 6, 5, 5, 6, false, false, false},
-				{playerTwo, 0, 7, 6, 3, false, false, false},
-				{playerOne, 2, 3, 3, 2, false, false, false},
-				{playerTwo, 7, 1, 2, 4, false, false, false},
-				{playerOne, 5, 3, 4, 2, false, false, false},
-				{playerTwo, 7, 2, 2, 7, true, false, false},
-				{playerOne, 4, 7, 7, 4, false, false, false},
-				{playerTwo, 4, 5, 4, 7, false, false, false},
-				{playerOne, 5, 6, 7, 2, true, false, false},
-				{playerTwo, 6, 1, 2, 3, false, false, false},
-				{playerOne, 0, 4, 3, 3, true, false, false},
-				{playerTwo, 2, 5, 3, 8, false, false, false},
-				{playerOne, 7, 8, 8, 7, false, false, false},
-				{playerTwo, 3, 7, 7, 3, false, false, false},
-				{playerOne, 1, 3, 3, 1, false, false, false},
-				{playerTwo, 3, 2, 1, 6, true, false, false},
-				{playerOne, 1, 8, 6, 7, false, false, false},
-				{playerTwo, 5, 7, 7, 5, false, false, false},
-				{playerOne, 8, 3, 5, 2, true, true, true},
+				{playerTwo, 77, 7, 8, false, false, false, false},
+				{playerOne, 62, 8, 2, false, false, false, false},
+				{playerTwo, 8, 2, 2, false, false, false, false},
+				{playerOne, 24, 2, 6, false, false, false, false},
+				{playerTwo, 72, 6, 6, false, false, false, false},
+				{playerOne, 54, 6, 0, false, false, false, false},
+				{playerTwo, 0, 0, 0, false, false, false, false},
+				{playerOne, 1, 0, 1, false, false, false, false},
+				{playerTwo, 3, 1, 0, false, false, false, false},
+				{playerOne, 19, 0, 7, false, false, false, false},
+				{playerTwo, 76, 7, 7, false, false, false, false},
+				{playerOne, 66, 7, 3, false, false, false, false},
+				{playerTwo, 38, 3, 5, false, false, false, false},
+				{playerOne, 44, 5, 5, false, false, false, false},
+				{playerTwo, 35, 5, 2, false, false, false, false},
+				{playerOne, 16, 2, 4, false, false, false, false},
+				{playerTwo, 40, 4, 4, false, false, false, false},
+				{playerOne, 41, 4, 5, false, false, false, false},
+				{playerTwo, 43, 5, 4, false, false, false, false},
+				{playerOne, 50, 4, 8, false, false, false, false},
+				{playerTwo, 61, 8, 1, false, false, false, false},
+				{playerOne, 4, 1, 1, false, false, false, false},
+				{playerTwo, 5, 1, 2, false, false, false, false},
+				{playerOne, 25, 2, 7, false, false, false, false},
+				{playerTwo, 75, 7, 6, true, false, false, false},
+				{playerOne, 74, 6, 8, false, false, false, false},
+				{playerTwo, 80, 8, 8, false, false, false, false},
+				{playerOne, 78, 8, 6, false, false, false, false},
+				{playerTwo, 65, 6, 5, false, false, false, false},
+				{playerOne, 51, 5, 6, false, false, false, false},
+				{playerTwo, 63, 6, 3, false, false, false, false},
+				{playerOne, 45, 3, 6, false, false, false, false},
+				{playerTwo, 64, 6, 4, true, false, false, false},
+				{playerOne, 32, 4, 2, true, false, false, false},
+				{playerTwo, 7, 2, 1, false, false, false, false},
+				{playerOne, 14, 1, 5, false, false, false, false},
+				{playerTwo, 33, 5, 0, false, false, false, false},
+				{playerOne, 10, 0, 4, true, false, true, false},
+				{playerTwo, 70, 8, 4, false, false, true, false},
+				{playerOne, 69, 8, 3, false, false, false, false},
+				{playerTwo, 28, 3, 1, false, false, false, false},
+				{playerOne, 12, 1, 3, false, false, false, false},
+				{playerTwo, 29, 3, 2, false, false, false, false},
+				{playerOne, 15, 2, 3, false, false, false, false},
+				{playerTwo, 36, 3, 3, false, false, false, false},
+				{playerOne, 27, 3, 0, false, false, true, false},
+				{playerTwo, 60, 8, 0, true, true, true, true},
 			}
 
 			for _, turn := range testTurns {
-				position := turn.X + (turn.Y * 9)
-
-				resultTurn, err := gameStorage.Turn(&game, turn.Player, position)
+				resultTurn, err := gameStorage.Turn(&game, turn.Player, turn.Position)
 
 				Expect(err).ToNot(HaveOccurred())
 				Expect(resultTurn.Field).To(Equal(turn.Field))
 				Expect(resultTurn.WonField).To(Equal(turn.WonField))
 				Expect(resultTurn.WonGame).To(Equal(turn.WonGame))
-				Expect(resultTurn.Position).To(Equal(position))
+				Expect(resultTurn.Position).To(Equal(turn.Position))
+				Expect(resultTurn.RandomField).To(Equal(turn.IsNextFieldRandom))
 				Expect(resultTurn.NextField).To(Equal(turn.NextField))
+			}
+		})
+
+		It("Insert invalid turn in won field", func() {
+			playerOne := InsertUser("playerOne")
+			playerTwo := InsertUser("playerTwo")
+			game := InsertFullGame(playerOne, playerTwo)
+
+			gameStorage.Turn(&game, playerTwo, 75)
+			gameStorage.Turn(&game, playerOne, 73)
+			gameStorage.Turn(&game, playerTwo, 66)
+			gameStorage.Turn(&game, playerOne, 46)
+			gameStorage.Turn(&game, playerTwo, 57)
+			_, err := gameStorage.Turn(&game, playerTwo, 19)
+
+			Expect(err).To(HaveOccurred())
+		})
+
+		It("Insert game with random field", func() {
+			playerOne := InsertUser("playerOne")
+			playerTwo := InsertUser("playerTwo")
+			game := InsertFullGame(playerOne, playerTwo)
+
+			var testTurns = []struct {
+				Player            model.User
+				Position          int
+				Field             int
+				NextField         int
+				WonField          bool
+				WonGame           bool
+				IsNextFieldRandom bool
+			}{
+				{playerTwo, 75, 7, 6, false, false, false},
+				{playerOne, 73, 6, 7, false, false, false},
+				{playerTwo, 77, 7, 8, false, false, false},
+				{playerOne, 79, 8, 7, false, false, false},
+				{playerTwo, 76, 7, 7, true, false, true},
+			}
+
+			for _, turn := range testTurns {
+				resultTurn, err := gameStorage.Turn(&game, turn.Player, turn.Position)
+
+				Expect(err).ToNot(HaveOccurred())
+				Expect(resultTurn.Field).To(Equal(turn.Field))
+				Expect(resultTurn.WonField).To(Equal(turn.WonField))
+				Expect(resultTurn.WonGame).To(Equal(turn.WonGame))
+				Expect(resultTurn.Position).To(Equal(turn.Position))
+				Expect(resultTurn.NextField).To(Equal(turn.NextField))
+				Expect(resultTurn.RandomField).To(Equal(turn.IsNextFieldRandom))
 			}
 		})
 
@@ -274,80 +293,19 @@ var _ = Describe("User", func() {
 			game := InsertFullGame(playerOne, playerTwo)
 
 			var testTurns = []struct {
-				Player      model.User
-				Position    int
-				Field       int
-				NextField   int
-				WonField    bool
-				WonGame     bool
-				RandomField bool
+				Player            model.User
+				Position          int
+				Field             int
+				NextField         int
+				WonField          bool
+				WonGame           bool
+				IsNextFieldRandom bool
 			}{
 				{playerTwo, 75, 7, 6, false, false, false},
 				{playerOne, 73, 6, 7, false, false, false},
-				{playerTwo, 76, 7, 7, false, false, false},
-				{playerOne, 77, 7, 8, false, false, false},
-				{playerTwo, 79, 8, 7, false, false, false},
-				{playerOne, 68, 7, 5, false, false, false},
-				{playerTwo, 52, 5, 7, false, false, false},
-				{playerOne, 59, 7, 2, true, false, false},
-				{playerTwo, 25, 2, 7, false, false, false},
-				{playerOne, 67, 7, 4, false, false, false},
-				{playerTwo, 49, 4, 7, false, false, false},
-				{playerOne, 58, 7, 1, false, false, false},
-				{playerTwo, 22, 1, 7, false, false, false},
-				{playerOne, 66, 7, 3, false, false, false},
-				{playerTwo, 46, 3, 7, false, false, false},
-				{playerOne, 57, 7, 0, false, false, false},
-				{playerTwo, 19, 0, 7, false, false, true},
-			}
-
-			for _, turn := range testTurns {
-				resultTurn, err := gameStorage.Turn(&game, turn.Player, turn.Position)
-
-				Expect(err).ToNot(HaveOccurred())
-				Expect(resultTurn.Field).To(Equal(turn.Field))
-				Expect(resultTurn.WonField).To(Equal(turn.WonField))
-				Expect(resultTurn.WonGame).To(Equal(turn.WonGame))
-				Expect(resultTurn.Position).To(Equal(turn.Position))
-				Expect(resultTurn.NextField).To(Equal(turn.NextField))
-
-				if turn.RandomField == true {
-					Expect(resultTurn.RandomField).To(BeTrue())
-				}
-			}
-		})
-
-		It("RandomField with last turn in same field", func() {
-			playerOne := InsertUser("playerOne")
-			playerTwo := InsertUser("playerTwo")
-			game := InsertFullGame(playerOne, playerTwo)
-
-			var testTurns = []struct {
-				Player      model.User
-				Position    int
-				Field       int
-				NextField   int
-				WonField    bool
-				WonGame     bool
-				RandomField bool
-			}{
-				{playerTwo, 75, 7, 6, false, false, false},
-				{playerOne, 73, 6, 7, false, false, false},
-				{playerTwo, 66, 7, 3, false, false, false},
-				{playerOne, 46, 3, 7, false, false, false},
-				{playerTwo, 57, 7, 0, true, false, false},
-				{playerOne, 19, 0, 7, false, false, false},
-				{playerTwo, 58, 7, 1, false, false, false},
-				{playerOne, 22, 1, 7, false, false, false},
-				{playerTwo, 59, 7, 2, false, false, false},
-				{playerOne, 25, 2, 7, false, false, false},
-				{playerTwo, 67, 7, 4, false, false, false},
-				{playerOne, 49, 4, 7, false, false, false},
-				{playerTwo, 68, 7, 5, false, false, false},
-				{playerOne, 52, 5, 7, false, false, false},
 				{playerTwo, 77, 7, 8, false, false, false},
 				{playerOne, 79, 8, 7, false, false, false},
-				{playerTwo, 76, 7, 7, false, false, true},
+				{playerTwo, 76, 7, 7, true, false, true},
 			}
 
 			for _, turn := range testTurns {
@@ -359,61 +317,24 @@ var _ = Describe("User", func() {
 				Expect(resultTurn.WonGame).To(Equal(turn.WonGame))
 				Expect(resultTurn.Position).To(Equal(turn.Position))
 				Expect(resultTurn.NextField).To(Equal(turn.NextField))
-
-				if turn.RandomField == true {
-					Expect(resultTurn.RandomField).To(BeTrue())
-				}
+				Expect(resultTurn.RandomField).To(Equal(turn.IsNextFieldRandom))
 			}
 		})
 
-		It("Insert game with random field at the end and random field turn", func() {
+		It("Insert invalid turn in already won field", func() {
 			playerOne := InsertUser("playerOne")
 			playerTwo := InsertUser("playerTwo")
 			game := InsertFullGame(playerOne, playerTwo)
 
-			var testTurns = []struct {
-				Player      model.User
-				Position    int
-				Field       int
-				NextField   int
-				WonField    bool
-				WonGame     bool
-				RandomField bool
-			}{
-				{playerTwo, 75, 7, 6, false, false, false},
-				{playerOne, 73, 6, 7, false, false, false},
-				{playerTwo, 76, 7, 7, false, false, false},
-				{playerOne, 77, 7, 8, false, false, false},
-				{playerTwo, 79, 8, 7, false, false, false},
-				{playerOne, 68, 7, 5, false, false, false},
-				{playerTwo, 52, 5, 7, false, false, false},
-				{playerOne, 59, 7, 2, true, false, false},
-				{playerTwo, 25, 2, 7, false, false, false},
-				{playerOne, 67, 7, 4, false, false, false},
-				{playerTwo, 49, 4, 7, false, false, false},
-				{playerOne, 58, 7, 1, false, false, false},
-				{playerTwo, 22, 1, 7, false, false, false},
-				{playerOne, 66, 7, 3, false, false, false},
-				{playerTwo, 46, 3, 7, false, false, false},
-				{playerOne, 57, 7, 0, false, false, false},
-				{playerTwo, 19, 0, 7, false, false, true},
-				{playerOne, 20, 0, 8, false, false, false},
-			}
+			gameStorage.Turn(&game, playerOne, 3)
+			gameStorage.Turn(&game, playerTwo, 1)
+			gameStorage.Turn(&game, playerOne, 5)
+			gameStorage.Turn(&game, playerTwo, 7)
+			gameStorage.Turn(&game, playerOne, 4)
+			_, err := gameStorage.Turn(&game, playerTwo, 12)
 
-			for _, turn := range testTurns {
-				resultTurn, err := gameStorage.Turn(&game, turn.Player, turn.Position)
-
-				Expect(err).ToNot(HaveOccurred())
-				Expect(resultTurn.Field).To(Equal(turn.Field))
-				Expect(resultTurn.WonField).To(Equal(turn.WonField))
-				Expect(resultTurn.WonGame).To(Equal(turn.WonGame))
-				Expect(resultTurn.Position).To(Equal(turn.Position))
-				Expect(resultTurn.NextField).To(Equal(turn.NextField))
-
-				if turn.RandomField == true {
-					Expect(resultTurn.RandomField).To(BeTrue())
-				}
-			}
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("Field already won"))
 		})
 
 		It("Insert invalid turn", func() {
@@ -450,28 +371,6 @@ var _ = Describe("User", func() {
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("Field is already played"))
-		})
-
-		It("Winner should not change", func() {
-			playerOne := InsertUser("playerOne")
-			playerTwo := InsertUser("playerTwo")
-			game := InsertFullGame(playerOne, playerTwo)
-
-			gameStorage.Turn(&game, playerOne, 24)
-			gameStorage.Turn(&game, playerTwo, 56)
-			gameStorage.Turn(&game, playerOne, 25)
-			gameStorage.Turn(&game, playerTwo, 59)
-			gameStorage.Turn(&game, playerOne, 26)
-			gameStorage.Turn(&game, playerTwo, 80)
-			gameStorage.Turn(&game, playerOne, 62)
-			gameStorage.Turn(&game, playerTwo, 17)
-			gameStorage.Turn(&game, playerOne, 35)
-			gameStorage.Turn(&game, playerTwo, 16)
-			gameStorage.Turn(&game, playerOne, 32)
-			turn, err := gameStorage.Turn(&game, playerTwo, 15)
-
-			Expect(err).ToNot(HaveOccurred())
-			Expect(turn.WonField).To(BeFalse())
 		})
 	})
 })

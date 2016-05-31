@@ -158,30 +158,27 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 		return turn, err
 	}
 
-	alreadyWonField := false
-
 	for _, previousTurn := range previousTurns {
 		if previousTurn.Position == turn.Position {
 			sameFieldErr := fmt.Sprintf("Field is already played")
 			return turn, errors.New(sameFieldErr)
 		}
+	}
 
-		if previousTurn.WonField == true && previousTurn.Field == turn.Field {
-			alreadyWonField = true
+	if storage.isFieldPlayable(turn.Field, previousTurns) == false {
+		fieldAlreadyWonErrMessage := fmt.Sprintf("Field already won")
+		return turn, errors.New(fieldAlreadyWonErrMessage)
+	}
+
+	var previousFieldPositions [9]bool
+
+	for _, previousTurn := range previousTurns {
+		if previousTurn.Field == turn.Field && previousTurn.Player.Id == turn.Player.Id {
+			previousFieldPositions[previousTurn.PositionInField] = true
 		}
 	}
 
-	if alreadyWonField == false {
-		var previousFieldPositions [9]bool
-
-		for _, previousTurn := range previousTurns {
-			if previousTurn.Field == turn.Field && previousTurn.Player.Id == turn.Player.Id {
-				previousFieldPositions[previousTurn.PositionInField] = true
-			}
-		}
-
-		turn.WonField = checkForWin(previousFieldPositions, turn.PositionInField)
-	}
+	turn.WonField = checkForWin(previousFieldPositions, turn.PositionInField)
 
 	if turn.WonField == true {
 		var previousWonFields [9]bool
@@ -205,21 +202,17 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 		turn.WonGame = checkForWin(previousWonFields, turn.Field)
 	}
 
-	previousTurnsInNextField := 0
+	isNextFieldPlayable := true
 
-	for _, previousTurn := range previousTurns {
-		if turn.NextField != previousTurn.Field {
-			continue
-		}
-
-		previousTurnsInNextField++
+	if turn.Field == turn.NextField && turn.WonField {
+		isNextFieldPlayable = false
 	}
 
-	if turn.Field == turn.NextField {
-		previousTurnsInNextField++
+	if isNextFieldPlayable == true {
+		isNextFieldPlayable = storage.isFieldPlayable(turn.NextField, previousTurns)
 	}
 
-	if previousTurnsInNextField == 9 {
+	if isNextFieldPlayable == false {
 		turn.RandomField = true
 	}
 
@@ -227,6 +220,24 @@ func (storage GameStorage) Turn(game *model.Game, player model.User, position in
 	err := collection.Insert(&turn)
 
 	return turn, err
+}
+
+func (storage GameStorage) isFieldPlayable(field int, previousTurns model.Turns) bool {
+	isFieldPlayable := true
+
+	for _, previousTurn := range previousTurns {
+		if field != previousTurn.Field {
+			continue
+		}
+
+		if previousTurn.WonField == false {
+			continue
+		}
+
+		isFieldPlayable = false
+	}
+
+	return isFieldPlayable
 }
 
 func (storage GameStorage) updateTurnCount(game *model.Game) error {
