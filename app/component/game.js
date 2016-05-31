@@ -184,6 +184,10 @@ class Game extends React.Component {
 			return;
 		}
 
+		if (this.state.fields && this.state.fields[field] && this.state.fields[field].won) {
+			return;
+		}
+
 		if (this.state.isNextFieldRandom == false && this.state.nextField != field) {
 			return;
 		}
