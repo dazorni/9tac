@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dazorni/9tac.svg?branch=master)](https://travis-ci.org/dazorni/9tac)
+[![Build Status](https://api.travis-ci.org/dazorni/9tac.svg?branch=master)](https://travis-ci.org/dazorni/9tac)
 [![Coverage Status](https://coveralls.io/repos/github/dazorni/9tac/badge.svg?branch=master)](https://coveralls.io/github/dazorni/9tac?branch=master)
 
 # 9tac
