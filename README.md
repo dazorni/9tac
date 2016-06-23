@@ -32,3 +32,46 @@ docker run -e "PORT=5000" -p 80:5000 -d --link mongo:mongo dazorni/9tac
 ```
 
 Now you can access the game on your docker ip at port ``80``
+
+# Developer Installation Guide
+
+Checkout the repository and start with those steps:
+
+1. Install all node dependencies
+
+```
+npm install
+```
+
+2. Get all golang dependencies
+
+```
+go get -t -d -v ./...
+```
+
+3. Install ginkgo for testing
+
+```
+go get github.com/onsi/ginkgo/ginkgo
+```
+
+4. Start tests
+
+```
+ginkgo -r
+```
+
+5. Prepare public files
+
+```
+npm run build
+npm run build:watch
+```
+
+6. Start the application
+
+```
+go run main.go
+```
+
+7. HAVE FUN!
