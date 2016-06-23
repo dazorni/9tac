@@ -35,7 +35,7 @@ func main() {
 	}
 
 	if "" == os.Getenv("PUBLIC_DIR") {
-		os.Setenv("PUBLIC_DIR", "public")
+		os.Setenv("PUBLIC_DIR", "build/public")
 	}
 
 	connectionString := "localhost:27017"
