@@ -85,6 +85,21 @@ var _ = Describe("User", func() {
 			Expect(game.FirstPlayer.Id).ToNot(Equal(game.SecondPlayer.Id))
 			Expect(err.Error()).To(ContainSubstring("A player can not play against himself"))
 		})
+
+		It("Second player is already set", func() {
+			firstPlayer := InsertUser("first")
+			secondPlayer := InsertUser("second")
+			thirdPlayer := InsertUser("third")
+
+			game := InsertGame(firstPlayer)
+			gameStorage.JoinGame(&game, secondPlayer)
+
+			err := gameStorage.JoinGame(&game, thirdPlayer)
+
+			Expect(err).To(HaveOccurred())
+			Expect(game.SecondPlayer.Id).ToNot(Equal(thirdPlayer.ID))
+			Expect(err.Error()).To(ContainSubstring("There are already two players on this game"))
+		})
 	})
 
 	Context("Games for user", func() {
