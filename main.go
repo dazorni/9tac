@@ -127,11 +127,16 @@ func main() {
 				}
 			}
 
+			uniqueChannelID := fmt.Sprint(username, gameCode)
+
+			socket.Join(uniqueChannelID)
+
 			game := model.Game{}
 			game.ID = bson.ObjectIdHex(gameCode)
 
 			if err := gameStorage.JoinGame(&game, user); err != nil {
-				// emit error to the user
+				socket.Emit("error:error", err.Error())
+				socket.BroadcastTo(uniqueChannelID, "error:error", err.Error())
 				log.Print(err)
 
 				return
