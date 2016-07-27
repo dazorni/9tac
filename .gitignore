@@ -37,3 +37,6 @@ build
 
 # Mac files
 .DS_Store
+
+# Ignore npm folder
+node_modules/
