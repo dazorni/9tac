@@ -24,7 +24,7 @@ var config = {
         include : APP_DIR,
         loader : 'babel'
       }
-	  ],
+    ],
     preLoaders: [
       {
         test: /\.js?$/,
