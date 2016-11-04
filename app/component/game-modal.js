@@ -1,40 +1,17 @@
 import React from 'react';
+import Modal from './modal';
 
 class GameModal extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      hide: false
-    }
-  }
-
   render() {
-    if (this.state.hide) {
-      return (null);
-    }
-
-    return(
-      <div className="game-modal-container">
-        <div className="game-modal">
-          <button type="button" className="close" aria-label="Close" onClick={this._hide.bind(this)}>
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div className={this._getIconClass()}></div>
-          <div className="game-modal-text">{this._getText()}</div>
-        </div>
-      </div>
-    );
+    return(<Modal iconClass={this._getIconClass()} text={this._getText()} />);
   }
 
   _getIconClass() {
-    let iconClass = 'game-modal-icon-lost';
-
     if (this.props.won) {
-      iconClass = 'game-modal-icon-won';
+      return 'game-modal-icon-won';
     }
 
-    return 'game-modal-icon ' + iconClass;
+    return 'game-modal-icon-lost';
   }
 
   _getText() {
@@ -43,10 +20,6 @@ class GameModal extends React.Component {
     }
 
     return ('You lost that game...');
-  }
-
-  _hide() {
-    this.setState({hide: true});
   }
 }
 

@@ -3,6 +3,7 @@ import GameField from './game-field';
 import IO from 'socket.io-client';
 import GamePlayerInfoBox from './game-player-info-box';
 import GameModal from './game-modal';
+import ErrorModal from './error/modal';
 import SharingScreen from './game/sharing-screen';
 
 class Game extends React.Component {
@@ -21,12 +22,14 @@ class Game extends React.Component {
 			isNextFieldRandom: false,
 			gameEnded: false,
 			winner: null,
+			error: null,
 			fields: this._createFields()
 		}
 
 		this.state.socket.on('game:turn:draw', this._drawTurn.bind(this));
 		this.state.socket.on('game:new', this._createGame.bind(this));
 		this.state.socket.on('game:join', this._joinGame.bind(this));
+		this.state.socket.on('error:error', this._showError.bind(this));
 	}
 
 	_createFields() {
@@ -67,6 +70,8 @@ class Game extends React.Component {
 
 					{this._winningModal()}
 
+					{this._errorModal()}
+
 					<nav className="navbar navbar-fixed-bottom navbar-light bg-faded">
 						{this._getPlayerInfo()}
 					</nav>
@@ -81,7 +86,10 @@ class Game extends React.Component {
     }
 
     return (
-      <div>Create game...</div>
+      <div>
+				{this._errorModal()}
+				Create game...
+			</div>
     )
 	}
 
@@ -101,6 +109,14 @@ class Game extends React.Component {
 				key={field.position}
 				next={isNextField} />)
 		})
+	}
+
+	_errorModal() {
+		if (! this.state.error) {
+			return ('');
+		}
+
+		return (<ErrorModal message={this.state.error} />)
 	}
 
 	_winningModal() {
@@ -267,6 +283,10 @@ class Game extends React.Component {
 		} else {
 			this.state.socket.emit('game:new', this.props.username);
 		}
+	}
+
+	_showError(errorMessage) {
+		this.setState({error: errorMessage});
 	}
 }
 

@@ -35,17 +35,21 @@ func (storage GameStorage) JoinGame(game *model.Game, joiningUser model.User) er
 	session := storage.session.Copy()
 	defer session.Close()
 
-	game.SecondPlayer = joiningUser.DBRef()
-
 	err := session.DB(storage.databaseName).C("game").FindId(game.ID).One(&game)
 
 	if err != nil {
 		return err
 	}
 
+	if game.SecondPlayer.Id != nil {
+		return errors.New("There are already two players on this game")
+	}
+
 	if game.FirstPlayer.Id == joiningUser.ID {
 		return errors.New("A player can not play against himself")
 	}
+
+	game.SecondPlayer = joiningUser.DBRef()
 
 	return session.DB(storage.databaseName).C("game").UpdateId(game.ID, &game)
 }

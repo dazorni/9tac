@@ -1,16 +1,22 @@
-$field-empty-bg: #78BEC5;
+$field-empty-bg: $brand-info;
 $field-next-bg: red;
 
-$player-one-bg: #dc685a;
+$player-one-bg: $brand-warning;
 $player-one-color: #ffffff;
 $player-one-icon: $fa-var-times;
-$player-two-bg: #ecaf4f;
+$player-two-bg: $brand-danger;
 $player-two-color: #ffffff;
 $player-two-icon: $fa-var-circle-o;
 
 $body-padding: (5*$font-size-base);
 
 $game-modal-won-icon: $fa-var-trophy;
-$game-modal-won-color: #ecaf4f;
+$game-modal-won-color: $brand-warning;
 $game-modal-lost-icon: $fa-var-frown-o;
-$game-modal-lost-color: #dc685a;
+$game-modal-lost-color: $brand-danger;
+$game-modal-error-color: $brand-danger;
+$game-modal-error-icon: $fa-var-times;
+$game-modal-info-color: $brand-info;
+$game-modal-info-icon: $fa-var-info;
+$game-modal-warning-color: $brand-warning;
+$game-modal-warning-icon: $fa-var-exclamation;

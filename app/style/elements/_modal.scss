@@ -1,4 +1,4 @@
-.game-modal-container {
+.modal-container {
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
 
-  .game-modal {
+  .modal-box {
     position: relative;
     width: 300px;
     max-width: 100%;
@@ -25,19 +25,34 @@
       right: 7px;
     }
 
-    .game-modal-icon {
+    .modal-icon {
       @include fa-icon();
       font-size: 100px;
       padding-bottom: 1rem;
 
-      &.game-modal-icon-won:before {
+      &.modal-icon-won:before {
         color: $game-modal-won-color;
         content: $game-modal-won-icon;
       }
 
-      &.game-modal-icon-lost:before {
+      &.modal-icon-lost:before {
         color: $game-modal-lost-color;
         content: $game-modal-lost-icon;
+      }
+
+      &.modal-icon-error:before {
+        color: $game-modal-error-color;
+        content: $game-modal-error-icon;
+      }
+
+      &.modal-icon-info:before {
+        color: $game-modal-info-color;
+        content: $game-modal-info-icon;
+      }
+
+      &.modal-icon-warning:before {
+        color: $game-modal-warning-color;
+        content: $game-modal-warning-icon;
       }
     }
   }
